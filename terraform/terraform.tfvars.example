@@ -1,0 +1,22 @@
+# This file is an example values file.
+# Copy it to terraform.tfvars for local non-secret values:
+#
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# Do not put the DigitalOcean token here. Use DIGITALOCEAN_TOKEN instead.
+
+# Project/environment naming.
+project_name = "your_project_name"
+env          = "dev"
+
+# DigitalOcean droplet location and size.
+region       = "fra1"
+droplet_size = "s-1vcpu-1gb"
+
+# Path to your local public SSH key.
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+
+# For production, replace 0.0.0.0/0 with your public IP /32.
+allowed_ssh_cidrs = [
+  "0.0.0.0/0"
+]

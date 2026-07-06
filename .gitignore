@@ -1,0 +1,27 @@
+# Terraform local cache
+**/.terraform/*
+
+# Terraform state can contain real infrastructure data and secrets.
+*.tfstate
+*.tfstate.*
+
+# Local variable files can contain tokens, passwords, IP allowlists, etc.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Terraform plan files are local artifacts.
+*.tfplan
+*.plan
+
+# Crash logs and local override files.
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI config
+.terraformrc
+terraform.rc

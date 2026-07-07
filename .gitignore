@@ -25,3 +25,24 @@ override.tf.json
 # CLI config
 .terraformrc
 terraform.rc
+
+# Ansible local runtime data.
+.ansible/
+*.retry
+ansible.log
+
+# Ansible Vault password files must stay local. Encrypted vault YAML files can
+# still be committed intentionally when needed.
+.vault_pass
+.vault-password
+vault-password*
+
+# Local environment files for compose or ad-hoc provisioning.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local Ansible inventory with real server IPs/users.
+ansible/inventories/hosts/host.yml
+!ansible/inventories/hosts/host.example.yml

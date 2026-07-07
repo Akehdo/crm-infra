@@ -5,7 +5,8 @@
   ansible.builtin.assert:
     that:
       - deploy_authorized_keys | length > 0
-      - deploy_authorized_keys | reject('match', '^твой_ключ$') | list | length == deploy_authorized_keys | length
+      - deploy_authorized_keys | reject('search', 'CHANGE_ME|твой_ключ') | list | length == deploy_authorized_keys | length
+      - deploy_authorized_keys | select('match', '^(ssh-ed25519|ssh-rsa)\\s+\\S+') | list | length == deploy_authorized_keys | length
     fail_msg: "Set real deploy_authorized_keys before running bootstrap"
 
 # Fresh Ubuntu images usually have sudo, but installing it explicitly makes the

@@ -1,0 +1,9 @@
+---
+# Example variables for the prod inventory.
+# Copy this file to all.yml locally and replace the SSH key with your own
+# public key from ~/.ssh/id_ed25519.pub.
+deploy_user: deploy
+deploy_user_shell: /bin/bash
+
+deploy_authorized_keys:
+  - "ssh-ed25519 CHANGE_ME your-name@example.com"

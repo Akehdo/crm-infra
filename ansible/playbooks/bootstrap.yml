@@ -1,6 +1,9 @@
+---
 - name: Bootstrap CRM server
   hosts: crm_servers
-  become: true
+  # Run this playbook with the initial root SSH access from Terraform. The role
+  # creates the deploy user and configures sudo for later playbooks.
+  become: false
   roles:
     - role: bootstrap
       tags:

@@ -44,5 +44,9 @@ vault-password*
 !.env.*.example
 
 # Local Ansible inventory with real server IPs/users.
-ansible/inventories/hosts/host.yml
-!ansible/inventories/hosts/host.example.yml
+ansible/inventories/prod/host.yml
+!ansible/inventories/prod/host.example.yml
+
+# Local Ansible variables can contain operator SSH keys and other access data.
+ansible/inventories/prod/group_vars/all.yml
+!ansible/inventories/prod/group_vars/all.example.yml

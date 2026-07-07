@@ -1,0 +1,70 @@
+---
+# Tag convention for this role:
+# - common: all base preparation tasks.
+# - packages: apt cache and required system tools.
+# - upgrade: optional full system upgrade.
+# - timezone: system timezone only.
+# - hostname: hostname and /etc/hosts only.
+# - directories: CRM filesystem layout only.
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - common
+    - packages
+
+- name: Upgrade system packages
+  ansible.builtin.apt:
+    upgrade: dist
+  when: common_upgrade_system | bool
+  tags:
+    - common
+    - upgrade
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present
+  tags:
+    - common
+    - packages
+
+- name: Set server timezone
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+  when: common_timezone is defined
+  tags:
+    - common
+    - timezone
+
+- name: Set server hostname
+  ansible.builtin.hostname:
+    name: "{{ common_hostname }}"
+  when: common_hostname is defined
+  tags:
+    - common
+    - hostname
+
+- name: Ensure hostname is present in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1\s+'
+    line: "127.0.1.1 {{ common_hostname }}"
+    state: present
+  when: common_hostname is defined
+  tags:
+    - common
+    - hostname
+
+- name: Ensure common directories exist
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ common_directories }}"
+  tags:
+    - common
+    - directories

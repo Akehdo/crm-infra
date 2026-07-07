@@ -1,0 +1,45 @@
+---
+# Server timezone used by logs, cron jobs, and operational troubleshooting.
+common_timezone: "Asia/Almaty"
+
+# Hostname shown by the OS and written to /etc/hosts for local resolution.
+common_hostname: "crm-prod-1"
+
+# Keep full distro upgrades opt-in. Package upgrades are useful, but they can
+# restart services or change behavior, so the default bootstrap path is safer.
+common_upgrade_system: false
+
+# Base packages needed for provisioning, troubleshooting, Docker repository
+# setup, archive extraction, and Python-based Ansible modules.
+common_packages:
+  - curl
+  - wget
+  - git
+  - unzip
+  - htop
+  - nano
+  - ca-certificates
+  - gnupg
+  - lsb-release
+  - software-properties-common
+  - python3-pip
+
+# Directories shared by future CRM roles:
+# /opt/crm stores compose files and app config.
+# /var/backups/crm stores database/cache backups.
+# /var/log/crm gives project-specific scripts a stable log location.
+common_directories:
+  - path: /opt/crm
+    owner: root
+    group: root
+    mode: "0755"
+
+  - path: /var/backups/crm
+    owner: root
+    group: root
+    mode: "0750"
+
+  - path: /var/log/crm
+    owner: root
+    group: root
+    mode: "0755"

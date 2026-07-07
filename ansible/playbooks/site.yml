@@ -1,0 +1,17 @@
+---
+# Main entrypoint for preparing CRM servers. Run from crm-infra/ansible:
+# ansible-playbook playbooks/site.yml
+- name: Configure CRM server
+  # Inventory group defined in inventories/hosts/host.yml.
+  hosts: crm_servers
+
+  # Required for package installation, hostname changes, and system directories.
+  become: true
+
+  roles:
+    # Tags:
+    # - common: run all base server preparation tasks.
+    # - packages/timezone/hostname/directories/upgrade: run only that slice.
+    - role: common
+      tags:
+        - common

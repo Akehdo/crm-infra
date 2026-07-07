@@ -8,7 +8,7 @@
 # - directories: CRM filesystem layout only.
 - name: Update apt cache
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   tags:
     - common

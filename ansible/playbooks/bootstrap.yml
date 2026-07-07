@@ -1,0 +1,7 @@
+- name: Bootstrap CRM server
+  hosts: crm_servers
+  become: true
+  roles:
+    - role: bootstrap
+      tags:
+        - bootstrap

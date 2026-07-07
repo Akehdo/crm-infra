@@ -1,0 +1,11 @@
+---
+# Linux user that Ansible will create for day-to-day deployments.
+deploy_user: deploy
+
+# Login shell for the deploy user. /bin/bash is available on standard Ubuntu
+# droplets and is friendly for interactive SSH sessions.
+deploy_user_shell: /bin/bash
+
+# Public SSH keys allowed to log in as deploy_user.
+# Keep the default empty so bootstrap fails unless inventory provides real keys.
+deploy_authorized_keys: []

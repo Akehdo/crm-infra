@@ -1,0 +1,48 @@
+---
+# Bootstrap is intended to run once over the initial root SSH access created by
+# Terraform. It prepares a safer deploy user for future Ansible runs.
+- name: Validate deploy SSH keys
+  ansible.builtin.assert:
+    that:
+      - deploy_authorized_keys | length > 0
+      - deploy_authorized_keys | reject('match', '^твой_ключ$') | list | length == deploy_authorized_keys | length
+    fail_msg: "Set real deploy_authorized_keys before running bootstrap"
+
+# Fresh Ubuntu images usually have sudo, but installing it explicitly makes the
+# role work with lean images too.
+- name: Ensure sudo is installed
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+    update_cache: true
+
+# The deploy user is added to sudo without replacing any existing groups, so the
+# task stays safe if the user already exists.
+- name: Create deploy user
+  ansible.builtin.user:
+    name: "{{ deploy_user }}"
+    shell: "{{ deploy_user_shell }}"
+    groups: sudo
+    append: true
+    create_home: true
+    state: present
+
+# Each public key from inventory becomes one line in
+# /home/{{ deploy_user }}/.ssh/authorized_keys.
+- name: Add authorized keys for deploy user
+  ansible.posix.authorized_key:
+    user: "{{ deploy_user }}"
+    key: "{{ item }}"
+    state: present
+  loop: "{{ deploy_authorized_keys }}"
+
+# Passwordless sudo lets future playbooks use become without storing a sudo
+# password. visudo validates the generated file before it is written.
+- name: Allow deploy user passwordless sudo
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ deploy_user }}"
+    content: "{{ deploy_user }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
